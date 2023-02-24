@@ -10,11 +10,6 @@
             "role": "developer, author"
         }
     ],
-    "scripts": {
-        "post-install-cmd": [
-            "export PATH=\"$HOME/.composer/vendor/bin:$PATH\""
-        ]
-    },
     "bin": [
         "git-release-automator"
     ]
