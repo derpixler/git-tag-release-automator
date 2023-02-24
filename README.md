@@ -16,7 +16,7 @@ Git tag v1.1.1 created and pushed successfully.
 
 ### Install:
 ```
-composer global require derpixler/git-release-automator 
+composer global require --prefer-source derpixler/git-release-automator
 ```
 
 ### Execute:
