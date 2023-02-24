@@ -1,0 +1,24 @@
+{
+    "name": "derpixler/git-release-automator",
+    "description": "Automated Git release tagging & branch creation for major/minor/patch versions.",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Renè Reimann",
+            "homepage": "https://rene-reimann.de",
+            "email": "info@rene-reimann.de",
+            "role": "developer, author"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "develop"
+        }
+    },
+    "scripts": {
+        "git-release-automator": [
+            "chmod +x git-release-automator.sh > /dev/null",
+            "./git-release-automator.sh"
+        ]
+    }
+}
