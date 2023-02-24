@@ -72,7 +72,7 @@ if [ -d ".git" ]; then
     if [ ! "$choice" ]; then
       # Ask the user which version number (Major, Minor, or Patch) to increase
       echo "Latest tag: ${tag_prefix:+v}$latest_tag"
-      echo "Which version number do you want to increase? (M.m.p)"
+      echo "Which part of the version do you want to increase? (M.m.p)"
       read -n 1 -r -p "Your choice: " choice
       echo
     fi
