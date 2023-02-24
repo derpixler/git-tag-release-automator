@@ -10,11 +10,6 @@
             "role": "developer, author"
         }
     ],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "develop"
-        }
-    },
     "scripts": {
         "git-release-automator": [
             "chmod +x git-release-automator.sh > /dev/null",
