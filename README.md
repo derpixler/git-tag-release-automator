@@ -6,7 +6,7 @@ The shell script fetch the latest Git tag and prompts the user to increase the m
 ```
 ❯ git-release-automator
 Latest tag: v1.1.0
-Which version number do you want to increase? (M.m.p)
+Which part of the version do you want to increase? (M.m.p)
 Your choice: p
 
 Switched to existing release branch release/v1.1.0
