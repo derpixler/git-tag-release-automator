@@ -10,12 +10,6 @@
             "role": "developer, author"
         }
     ],
-    "scripts": {
-        "git-release-automator": [
-            "chmod +x git-release-automator.sh > /dev/null",
-            "./git-release-automator.sh"
-        ]
-    },
     "bin": [
         "git-release-automator"
     ]
