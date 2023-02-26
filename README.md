@@ -16,12 +16,12 @@ Git tag v1.1.1 created and pushed successfully.
 
 ### Install:
 ```
-composer global require --prefer-source derpixler/git-release-automator
+composer require --prefer-source derpixler/git-release-automator
 ```
 
 ### Execute:
 ```
-git-release-automator
+./vendor/bin/git-release-automator
  ```
 
 ## Contact:
