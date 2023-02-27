@@ -99,7 +99,6 @@ function switch_branch()
     branch=$(echo $branch | sed 's/^origin\///')
   fi
 
-    echo "Switch branch: $branch"
   git checkout $branch > /dev/null 2>&1
 }
 
