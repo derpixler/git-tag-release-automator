@@ -51,9 +51,8 @@ function create_release_branch()
 
   if ! [ -z "$release_branch" ]; then
     switch_branch $release_branch
-  fi
-
-  echo "No \"$release_branch_name\" found, create one? (y/n)"
+  else
+    echo "No \"$release_branch_name\" found, create one? (y/n)"
     read -n 1 -r -p "Your choice: " choice
     printf "\n\n"
 
@@ -73,6 +72,7 @@ function create_release_branch()
           exit 1
           ;;
     esac
+  fi
 }
 
 ##
