@@ -1,5 +1,5 @@
 {
-    "name": "derpixler/git-release-automator",
+    "name": "derpixler/git-tag-release-automator",
     "description": "Automated Git release tagging & branch creation for major/minor/patch versions.",
     "license": "GPL-2.0",
     "authors": [
@@ -11,6 +11,6 @@
         }
     ],
     "bin": [
-        "git-release-automator"
+        "git-tag-release-automator"
     ]
 }
