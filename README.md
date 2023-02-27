@@ -21,7 +21,7 @@ composer require --prefer-source derpixler/git-tag-release-automator
 
 ### Execute:
 ```
-git-tag-release-automator
+./vendor/bin/git-tag-release-automator
  ```
 
 ## Contact:
