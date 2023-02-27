@@ -1,9 +1,9 @@
 #!/bin/bash
 
 ################################################################################
-# Script Name: git-release-automator.sh
+# Script Name: git-tag-release-automator.sh
 # Author: René Reimann (info@rene-reimann.de)
-# Version: v1.0.0
+# Version: v1.2.0
 #
 # Description:
 # Automated script for Git release tagging and creation of release branches for
@@ -49,8 +49,11 @@ function create_release_branch()
   local release_tag=$2
   local release_branch=$(git branch -r | grep $release_branch_name)
 
-  if [ -z "$release_branch" ]; then
-    echo "No \"$release_branch_name\" found, create one? (y/n)"
+  if ! [ -z "$release_branch" ]; then
+    switch_branch $release_branch
+  fi
+
+  echo "No \"$release_branch_name\" found, create one? (y/n)"
     read -n 1 -r -p "Your choice: " choice
     printf "\n\n"
 
@@ -70,11 +73,6 @@ function create_release_branch()
           exit 1
           ;;
     esac
-
-  else
-    switch_branch $release_branch
-  fi
-
 }
 
 ##
@@ -101,6 +99,7 @@ function switch_branch()
     branch=$(echo $branch | sed 's/^origin\///')
   fi
 
+    echo "Switch branch: $branch"
   git checkout $branch > /dev/null 2>&1
 }
 
