@@ -56,6 +56,14 @@ function create_release_branch()
     read -n 1 -r -p "Your choice: " choice
     printf "\n\n"
 
+    if git rev-parse --verify main >/dev/null 2>&1; then
+      default_branch="main"
+    elif git rev-parse --verify master >/dev/null 2>&1; then
+      default_branch="master"
+    else
+      default_branch="develop"
+    fi
+
     case $choice in
         y)
             # Create a new release branch
