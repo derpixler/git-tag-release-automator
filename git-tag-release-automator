@@ -36,10 +36,9 @@ function create_and_push_git_tag()
       exit 1
     else
 	    echo "\"$local_release_branch\" updated"
-  	  git pull -f origin $local_release_branch > /dev/null 2>&1
-
-      #git tag $new_tag > /dev/null 2>&1
-      #git push origin $new_tag  > /dev/null 2>&1
+  	  git pull -f $local_release_branch > /dev/null 2>&1
+      git tag $new_tag > /dev/null 2>&1
+      git push origin $new_tag  > /dev/null 2>&1
       echo "Git tag $new_tag created and pushed successfully."
     fi
 }
