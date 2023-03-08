@@ -31,12 +31,14 @@ function create_and_push_git_tag()
     origin_release_branch="origin/release/$2"
     diff=$(git diff ${origin_release_branch} ${local_release_branch})
 
-    if ! [ -z "$diff" ]; then
+    echo "Diff: $diff"
+
+    if [ -z "$diff" ]; then
       echo "There are no changes between ${origin_release_branch} and ${local_release_branch}"
-      exit 1
     else
 	    echo "\"$local_release_branch\" updated"
   	  git pull -f $local_release_branch > /dev/null 2>&1
+
       git tag $new_tag > /dev/null 2>&1
       git push origin $new_tag  > /dev/null 2>&1
       echo "Git tag $new_tag created and pushed successfully."
