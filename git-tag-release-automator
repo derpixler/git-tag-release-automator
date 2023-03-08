@@ -31,7 +31,7 @@ function create_and_push_git_tag()
     origin_release_branch="origin/release/$2"
     diff=$(git diff ${origin_release_branch} ${local_release_branch})
 
-    echo "Diff: $diff"
+    echo "Diff: $(git diff ${origin_release_branch} ${local_release_branch})"
 
     if [ -z "$diff" ]; then
       echo "There are no changes between ${origin_release_branch} and ${local_release_branch}"
@@ -207,7 +207,6 @@ case $choice in
        current_release_branch=$(echo $new_tag | sed 's/.$/0/')
        create_release_branch $current_release_branch
        create_and_push_git_tag $new_tag $current_release_branch
-       echo "Create tag $new_tag at the current release branch \"release/$current_release_branch\""
        switch_branch $current_branch
        ;;
     *)
