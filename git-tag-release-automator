@@ -29,7 +29,7 @@ function create_and_push_git_tag()
     new_tag=$1
     local_release_branch="release/$2"
     origin_release_branch="origin/release/$2"
-    diff=$(echo git pull -f origin $local_release_branch | grep -o '[0-9a-f]\{7\}\.\.[0-9a-f]\{7\}')
+    diff=$(git pull -f origin $local_release_branch | grep -o '[0-9a-f]\{7\}\.\.[0-9a-f]\{7\}')
 
     echo "Diff: $diff"
 
