@@ -51,6 +51,9 @@ function create_release_branch()
 
   if ! [ -z "$release_branch" ]; then
     switch_branch $release_branch
+	
+	echo "\"$branch\" updated"
+	git pull -f origin $branch > /dev/null 2>&1
   else
     echo "No \"$release_branch_name\" found, create one? (y/n)"
     read -n 1 -r -p "Your choice: " choice
@@ -134,7 +137,7 @@ function init_release_tagging()
   case $choice in
       y|n)
           # Create and push the new git tag without "v"
-          new_tag=$(if [[ "$choice" == "y" ]]; then echo "v"; fi)1.0.0
+          new_tag=$(if [[ "$choice" = "y" ]]; then echo "v"; fi)1.0.0
               create_release_branch $new_tag
               create_and_push_git_tag $new_tag
           ;;
