@@ -47,30 +47,19 @@ function create_release_branch()
 {
   local release_branch_name="release/$1"
   local release_tag=$2
-  local release_branch=$(git branch -r | grep $release_branch_name)
 
-  if ! [ -z "$release_branch" ]; then
+  if ! [ -z "$(release_branch_exists "$release_branch_name")" ]; then
     switch_branch $release_branch
-	
-	echo "\"$branch\" updated"
-	git pull -f origin $branch > /dev/null 2>&1
   else
     echo "No \"$release_branch_name\" found, create one? (y/n)"
     read -n 1 -r -p "Your choice: " choice
     printf "\n\n"
 
-    if git rev-parse --verify main >/dev/null 2>&1; then
-      default_branch="main"
-    elif git rev-parse --verify master >/dev/null 2>&1; then
-      default_branch="master"
-    else
-      default_branch="develop"
-    fi
-
     case $choice in
         y)
             # Create a new release branch
-            git push origin main:$release_branch_name 2> /dev/null
+            git checkout -b $release_branch_name > /dev/null 2>&1
+            git push -u origin $release_branch_name > /dev/null 2>&1
             printf "%s\n%s\n" "Release branch \"$release_branch_name\" created." "Now you can merge into \"$release_branch_name\" and create tags."
             exit 1
             ;;
@@ -84,6 +73,11 @@ function create_release_branch()
           ;;
     esac
   fi
+}
+
+function release_branch_exists() {
+    local branch_name="release/$1"
+    git ls-remote --exit-code --heads origin "$branch_name" >/dev/null 2>&1
 }
 
 ##
@@ -111,6 +105,7 @@ function switch_branch()
   fi
 
   git checkout $branch > /dev/null 2>&1
+  echo "Switched branch to: $(git rev-parse --abbrev-ref HEAD)"
 }
 
 ##
@@ -190,15 +185,23 @@ esac
 new_tag="${tag_prefix:+v}$new_tag_number"
 case $choice in
     M|m)
-        create_release_branch $new_tag
-        create_and_push_git_tag $new_tag
+        if release_branch_exists "$new_tag"; then
+            create_and_push_git_tag $new_tag
+        else
+            create_release_branch $new_tag
+        fi
+
         switch_branch $current_branch
         ;;
     p)
        current_release_branch=$(echo $new_tag | sed 's/.$/0/')
-       create_release_branch $current_release_branch
-       echo "Create tag $new_tag at the current release branch \"release/$current_release_branch\""
-       create_and_push_git_tag $new_tag
+       if release_branch_exists "$new_tag"; then
+          echo "Create tag $new_tag at the current release branch \"release/$current_release_branch\""
+          create_and_push_git_tag $new_tag
+       else
+           create_release_branch $current_release_branch
+       fi
+
        switch_branch $current_branch
        ;;
     *)
