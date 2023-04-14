@@ -25,15 +25,16 @@
 ##
 function create_and_push_git_tag()
 {
-    local latest_tag=$2
+    local release_branch_name="release/${tag_prefix:+v}$(echo $1 | sed 's/^v//' | awk -F. '{ printf("%d.%d.0", $1, $2, $3) }')"
+    local latest_tag=${tag_prefix:+v}$2
     local new_tag=$1
-
-    git pull --quiet > /dev/null 2>&1
-    git tag $new_tag > /dev/null 2>&1
+    
+    git tag $new_tag $(git ls-remote origin $release_branch_name | awk '{print $1}') #> /dev/null 2>&1
     git push origin $new_tag > /dev/null 2>&1
 
-    if [ "$(git ls-remote origin $latest_tag | awk '{print $1}')" = "$(git ls-remote origin $new_tag | awk '{print $1}')" ]
+    if [ "$(git ls-remote origin $new_tag | awk '{print $1}')" = "$(git ls-remote origin $latest_tag | awk '{print $1}')" ]
     then
+      git tag -d $new_tag > /dev/null 2>&1
       git push --delete origin $new_tag > /dev/null 2>&1
       echo "❯ No changes detected."
       echo "❯ The tag $new_tag was not created."
@@ -125,7 +126,6 @@ function switch_branch()
   fi
 
   git checkout $branch > /dev/null 2>&1
-  #echo "Switched branch to: $(git rev-parse --abbrev-ref HEAD)"
 }
 
 ##
@@ -208,7 +208,7 @@ case $choice in
         if release_branch_exists "$new_tag"; then
             create_and_push_git_tag $new_tag
         else
-            create_release_branch $new_tag ${tag_prefix:+v}$tag_latest
+            create_release_branch $new_tag $tag_latest
         fi
 
         switch_branch $current_branch
@@ -217,7 +217,7 @@ case $choice in
        current_release_branch=$(echo $new_tag | sed 's/.$/0/')
        if release_branch_exists "$current_release_branch"; then
           echo "Create tag $new_tag at the current release branch \"release/$current_release_branch\""
-          create_and_push_git_tag $new_tag ${tag_prefix:+v}$tag_latest
+          create_and_push_git_tag $new_tag $tag_latest
        else
            create_release_branch $current_release_branch
        fi
