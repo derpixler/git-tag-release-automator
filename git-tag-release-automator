@@ -29,7 +29,7 @@ function create_and_push_git_tag()
     local latest_tag=${tag_prefix:+v}$2
     local new_tag=$1
     
-    git tag $new_tag $(git ls-remote origin $release_branch_name | awk '{print $1}') #> /dev/null 2>&1
+    git tag $new_tag $(git ls-remote origin $release_branch_name | awk '{print $1}') > /dev/null 2>&1
     git push origin $new_tag > /dev/null 2>&1
 
     if [ "$(git ls-remote origin $new_tag | awk '{print $1}')" = "$(git ls-remote origin $latest_tag | awk '{print $1}')" ]
