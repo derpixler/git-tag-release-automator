@@ -3,7 +3,6 @@
 ################################################################################
 # Script Name: git-tag-release-automator.sh
 # Author: René Reimann (info@rene-reimann.de)
-# Version: v1.2.0
 #
 # Description:
 # Automated script for Git release tagging and creation of release branches for
@@ -26,11 +25,22 @@
 ##
 function create_and_push_git_tag()
 {
-    new_tag=$1
+    local latest_tag=$2
+    local new_tag=$1
+
     git pull --quiet > /dev/null 2>&1
     git tag $new_tag > /dev/null 2>&1
-    git push origin $new_tag  > /dev/null 2>&1
-    echo "Git tag $new_tag created and pushed successfully."
+    git push origin $new_tag > /dev/null 2>&1
+
+    if [ "$(git ls-remote origin $latest_tag | awk '{print $1}')" = "$(git ls-remote origin $new_tag | awk '{print $1}')" ]
+    then
+      git push --delete origin $new_tag > /dev/null 2>&1
+      echo "❯ No changes detected."
+      echo "❯ The tag $new_tag was not created."
+    else
+     echo "❯ Git tag $new_tag created and pushed successfully."
+    fi
+
 }
 
 ##
@@ -198,16 +208,16 @@ case $choice in
         if release_branch_exists "$new_tag"; then
             create_and_push_git_tag $new_tag
         else
-            create_release_branch $new_tag $current_branch
+            create_release_branch $new_tag ${tag_prefix:+v}$tag_latest
         fi
 
         switch_branch $current_branch
         ;;
     p)
        current_release_branch=$(echo $new_tag | sed 's/.$/0/')
-       if release_branch_exists "$new_tag"; then
+       if release_branch_exists "$current_release_branch"; then
           echo "Create tag $new_tag at the current release branch \"release/$current_release_branch\""
-          create_and_push_git_tag $new_tag
+          create_and_push_git_tag $new_tag ${tag_prefix:+v}$tag_latest
        else
            create_release_branch $current_release_branch
        fi
