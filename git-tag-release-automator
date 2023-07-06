@@ -38,8 +38,8 @@ function create_and_push_git_tag()
 
     if [ "$(git ls-remote origin $new_tag | awk '{print $1}')" = "$(git ls-remote origin $latest_tag | awk '{print $1}')" ]
     then
-      git tag -d $new_tag > /dev/null 2>&1
-      git push --delete origin $new_tag > /dev/null 2>&1
+      git push --delete origin $new_tag 2>&1 >/dev/null
+      git tag -d $new_tag 2>&1 >/dev/null
       echo "❯ No changes detected."
       echo "❯ The tag $new_tag was not created."
     else
@@ -127,7 +127,7 @@ function switch_branch()
   else
     branch=$(echo $branch | sed 's/^origin\///')
   fi
-  echo "switch to $branch"
+
   git checkout $branch > /dev/null 2>&1
 }
 
@@ -217,7 +217,8 @@ case $choice in
         switch_branch $current_branch
         ;;
     p)
-       current_release_branch=$(echo $new_tag | sed 's/.$/0/')
+       current_release_branch=$(echo $new_tag | sed 's/\.\([0-9][0-9]*\)[^0-9]*$/\.0/')
+
        if release_branch_exists "$current_release_branch"; then
           echo "Create tag $new_tag at the current release branch \"release/$current_release_branch\""
           create_and_push_git_tag $new_tag $tag_latest
