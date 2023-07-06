@@ -79,9 +79,9 @@ function create_release_branch()
             fi
 
             switch_branch $origin_branch
-            git pull #> /dev/null 2>&1
-            git checkout -b $release_branch_name $origin_branch #> /dev/null 2>&1
-            git push -u origin $release_branch_name #> /dev/null 2>&1
+            git pull > /dev/null 2>&1
+            git checkout -b $release_branch_name $origin_branch > /dev/null 2>&1
+            git push -u origin $release_branch_name > /dev/null 2>&1
             printf "%s\n%s\n" "Release branch \"$release_branch_name\" created." "Now you can merge into \"$release_branch_name\" and create tags."
 
             switch_branch $current_branch
