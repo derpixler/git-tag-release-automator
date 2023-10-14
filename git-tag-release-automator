@@ -200,7 +200,7 @@ case $choice in
        new_tag_number=$(echo $tag_latest | awk -F. '{ printf("%d.%d.%d", $1, $2, $3 + 1) }')
        ;;
     *)
-       echo "Invalid input."
+       echo "Invalid input. Please choose a valid option: M, m, or p."
        exit 1
        ;;
 esac
